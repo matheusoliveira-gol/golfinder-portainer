@@ -1,0 +1,220 @@
+{
+	"_type": "export",
+	"__export_format": 4,
+	"__export_date": "2026-01-08T11:25:00.000Z",
+	"__export_source": "insomnia.desktop.app:v9.4.1",
+	"resources": [
+		{
+			"_id": "wrk_1",
+			"parentId": null,
+			"modified": 1736364000000,
+			"created": 1736363000000,
+			"name": "GolFind API",
+			"description": "",
+			"scope": "collection",
+			"_type": "workspace"
+		},
+		{
+			"_id": "fld_auth",
+			"parentId": "wrk_1",
+			"modified": 1736364000000,
+			"created": 1736363100000,
+			"name": "Auth",
+			"description": "",
+			"environment": {},
+			"environmentPropertyOrder": null,
+			"metaSortKey": -100,
+			"_type": "request_group"
+		},
+		{
+			"_id": "req_signin",
+			"parentId": "fld_auth",
+			"modified": 1736364100000,
+			"created": 1736363200000,
+			"url": "{{ _.base_url }}/api/auth/signin",
+			"name": "Sign In",
+			"description": "",
+			"method": "POST",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n\t\"email\": \"admin@golfind.com\",\n\t\"password\": \"admin123\"\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {},
+			"metaSortKey": -100,
+			"isPrivate": false,
+			"pathParameters": [],
+			"settingStoreCookies": true,
+			"settingSendCookies": true,
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingRebuildPath": true,
+			"settingFollowRedirects": "global",
+			"_type": "request"
+		},
+		{
+			"_id": "req_setup",
+			"parentId": "fld_auth",
+			"modified": 1736364200000,
+			"created": 1736363300000,
+			"url": "{{ _.base_url }}/api/auth/setup",
+			"name": "First Time Setup (Admin)",
+			"description": "Only works if there are NO users in the database.",
+			"method": "POST",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n\t\"email\": \"admin@golfind.com\",\n\t\"password\": \"admin123\",\n\t\"fullName\": \"Admin Principal\"\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {},
+			"metaSortKey": -90,
+			"isPrivate": false,
+			"pathParameters": [],
+			"settingStoreCookies": true,
+			"settingSendCookies": true,
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingRebuildPath": true,
+			"settingFollowRedirects": "global",
+			"_type": "request"
+		},
+		{
+			"_id": "req_needs_setup",
+			"parentId": "fld_auth",
+			"modified": 1736364300000,
+			"created": 1736363400000,
+			"url": "{{ _.base_url }}/api/auth/needs-setup",
+			"name": "Needs Setup?",
+			"description": "",
+			"method": "GET",
+			"body": {},
+			"parameters": [],
+			"headers": [],
+			"authentication": {},
+			"metaSortKey": -80,
+			"isPrivate": false,
+			"pathParameters": [],
+			"settingStoreCookies": true,
+			"settingSendCookies": true,
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingRebuildPath": true,
+			"settingFollowRedirects": "global",
+			"_type": "request"
+		},
+		{
+			"_id": "fld_pessoas",
+			"parentId": "wrk_1",
+			"modified": 1736364400000,
+			"created": 1736363500000,
+			"name": "Pessoas",
+			"description": "",
+			"environment": {},
+			"environmentPropertyOrder": null,
+			"metaSortKey": -90,
+			"_type": "request_group"
+		},
+		{
+			"_id": "req_get_pessoas",
+			"parentId": "fld_pessoas",
+			"modified": 1736364500000,
+			"created": 1736363600000,
+			"url": "{{ _.base_url }}/api/pessoas",
+			"name": "Get All Pessoas",
+			"description": "",
+			"method": "GET",
+			"body": {},
+			"parameters": [],
+			"headers": [],
+			"authentication": {
+				"type": "bearer",
+				"token": "{% response 'body', 'req_signin', '$.token', 'never', 60 %}"
+			},
+			"metaSortKey": -100,
+			"isPrivate": false,
+			"pathParameters": [],
+			"settingStoreCookies": true,
+			"settingSendCookies": true,
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingRebuildPath": true,
+			"settingFollowRedirects": "global",
+			"_type": "request"
+		},
+		{
+			"_id": "req_create_pessoa",
+			"parentId": "fld_pessoas",
+			"modified": 1736364600000,
+			"created": 1736363700000,
+			"url": "{{ _.base_url }}/api/pessoas",
+			"name": "Create Pessoa",
+			"description": "",
+			"method": "POST",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n\t\"nome\": \"Maria Souza\",\n\t\"rg\": \"987654321\",\n\t\"cpf\": \"444.555.666-77\",\n\t\"data_nascimento\": \"1985-05-20\",\n\t\"nome_mae\": \"Joana Souza\",\n\t\"created_at\": \"2026-01-08T12:00:00.000Z\",\n\t\"updated_at\": \"2026-01-08T12:00:00.000Z\"\n}"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"authentication": {
+				"type": "bearer",
+				"token": "{% response 'body', 'req_signin', '$.token', 'never', 60 %}"
+			},
+			"metaSortKey": -90,
+			"isPrivate": false,
+			"pathParameters": [],
+			"settingStoreCookies": true,
+			"settingSendCookies": true,
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingRebuildPath": true,
+			"settingFollowRedirects": "global",
+			"_type": "request"
+		},
+		{
+			"_id": "env_1",
+			"parentId": "wrk_1",
+			"modified": 1736364700000,
+			"created": 1736363800000,
+			"name": "Base Environment",
+			"data": {
+				"base_url": "http://localhost:8080"
+			},
+			"dataPropertyOrder": {
+				"&": [
+					"base_url"
+				]
+			},
+			"color": null,
+			"isPrivate": false,
+			"metaSortKey": 100,
+			"_type": "environment"
+		},
+		{
+			"_id": "jar_1",
+			"parentId": "wrk_1",
+			"modified": 1736363900000,
+			"created": 1736363900000,
+			"name": "Default Jar",
+			"cookies": [],
+			"_type": "cookie_jar"
+		}
+	]
+}

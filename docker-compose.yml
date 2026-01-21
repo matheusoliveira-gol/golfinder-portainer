@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  # Serviço do Banco de Dados PostgreSQL
+  postgres:
+    image: postgres:15-alpine
+    container_name: golfind_postgres
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    # ADICIONE ISTO: Verifica a cada 5s se o banco responde
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_DATABASE}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend.Dockerfile
+    container_name: golfind_backend
+    ports:
+      - "3001:3001"
+    env_file:
+      - .env
+    depends_on:
+      postgres:
+        condition: service_healthy # ADICIONE ISTO: Só inicia quando o healthcheck passar
+    # ADICIONE ISTO: Roda a migração E DEPOIS inicia o servidor
+    command: ./start.sh 
+    restart: unless-stopped
+  # Serviço do Frontend (React App com Nginx)
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend.Dockerfile
+    container_name: golfind_frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  # Volume nomeado para os dados do PostgreSQL
+  postgres_data:

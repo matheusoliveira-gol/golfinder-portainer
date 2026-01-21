@@ -12,7 +12,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "5433:5432"
     # ADICIONE ISTO: Verifica a cada 5s se o banco responde
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_DATABASE}"]
@@ -27,7 +27,7 @@ services:
       dockerfile: backend.Dockerfile
     container_name: golfinder_backend
     ports:
-      - "3001:3001"
+      - "3011:3001"
     env_file:
       - .env
     depends_on:
@@ -43,7 +43,7 @@ services:
       dockerfile: frontend.Dockerfile
     container_name: golfinder_frontend
     ports:
-      - "8080:80"
+      - "8090:80"
     depends_on:
       - backend
     restart: unless-stopped
